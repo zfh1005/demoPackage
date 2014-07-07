@@ -7,7 +7,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JFrame;
 
-public class CaptureScreenToolsUI111 {
+public class CaptureScreenToolsUI {
 
 	public static void main(String[] args) {
 		String userDir = System.getProperty("user.dir");
