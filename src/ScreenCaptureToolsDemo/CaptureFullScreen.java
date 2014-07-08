@@ -32,17 +32,14 @@ public class CaptureFullScreen {
 				ImageIO.write(bi, "jpg", (new File(OutputFileName)));
 			} 
 			catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}			
 		} 
 		catch (AWTException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		CaptureFullScreen cfs = new CaptureFullScreen();
 		cfs.CaptureScreen("c:\\test.jpg");
 
