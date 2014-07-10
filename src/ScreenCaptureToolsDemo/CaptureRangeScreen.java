@@ -30,12 +30,10 @@ public class CaptureRangeScreen {
 				ImageIO.write(bi, "jpg", (new File("c:\\test.jpg")));
 			} 
 			catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}			
 		} 
 		catch (AWTException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -44,7 +42,6 @@ public class CaptureRangeScreen {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		CaptureRangeScreen ci = new CaptureRangeScreen();
 		ci.CaptureFixedPixel(100, 100, 500, 400);
 		
