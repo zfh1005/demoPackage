@@ -1,7 +1,7 @@
 package functionDemo;
 
 /**
- * @author ZFH
+ * @author zfh1005
  *
  */
 
@@ -9,6 +9,9 @@ import java.math.BigInteger;
 import java.util.Arrays;
 
 public class MathFunctionDemo {
+	/*
+	 * 一维数组demo
+	 * */
 	public int OneDimensionalArrayDemo(int numberLength, int resultLength){
 		int iResult = 0;
 		int[] number = new int[numberLength];
@@ -26,7 +29,9 @@ public class MathFunctionDemo {
 		return iResult;
 	}
 	
-	
+	/*
+	 * 二维数组demo
+	 * */
 	public int TwoDimensionalArrayDemo(){
 		int iResult = 0;
 		final int iStartRate = 10;
@@ -78,12 +83,15 @@ public class MathFunctionDemo {
 		
 	}
 	
+	/*
+	 * String 类型转换为BigInteger类型,可以用来直接计算将MAC转换十进制数
+	 * */
 	public BigInteger ConvertStringToBigInteger(String toConvertString){
 		//length
 		final int iConvertStringLength = toConvertString.length();
 		if(toConvertString.trim().length() != iConvertStringLength){
 			//show error information
-			System.out.println("MAC length error!");
+			System.out.println("length error!");
 		}
 		char[] cConvertString = toConvertString.toUpperCase().toCharArray();
 		int[] iConvertString = new int[iConvertStringLength];

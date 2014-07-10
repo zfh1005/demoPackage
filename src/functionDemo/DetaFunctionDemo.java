@@ -1,7 +1,7 @@
 package functionDemo;
 
 /**
- * @author ZFH
+ * @author zfh1005
  *
  */
 
@@ -16,7 +16,7 @@ public class DetaFunctionDemo {
 	 * print <code>Data</code>
 	 * */
 	public void printDate(){
-		Date start = new Date();
+		Date start = new Date();		
 		//start
 		System.out.println("start time is:" + start.toString());
 		System.out.println((start.getYear() + 1900));
@@ -76,7 +76,7 @@ public class DetaFunctionDemo {
 	 * <code>Calendar</code> conversion to <code>Date</code> format
 	 * */
 	public Date CalendarConversionToDate(Calendar calendar){
-		Date date = calendar.getTime();
+		Date date = calendar.getTime();		
 		return date;
 	}
 	
@@ -99,14 +99,13 @@ public class DetaFunctionDemo {
 			
 			gc.set(Calendar.DAY_OF_MONTH, 1);
 			
-			int iWeekday = gc.get(Calendar.DAY_OF_WEEK);
-			
 			System.out.println("");
 			System.out.println("*******************************");
 			System.out.println("Month:" +(iMonth+1));	
 			System.out.println("**********************");
 			System.out.println("Sun	Mon	Tue	Wed	Thu	Fri	Sta");
 			
+			int iWeekday = gc.get(Calendar.DAY_OF_WEEK);
 			for(int iWeekRty = Calendar.SUNDAY; iWeekRty < iWeekday; iWeekRty++){
 				System.out.print("	");
 			}
@@ -120,8 +119,8 @@ public class DetaFunctionDemo {
 				}
 				gc.add(Calendar.DAY_OF_MONTH, 1);
 				iWeekday = gc.get(Calendar.DAY_OF_WEEK);
-			}
-			while(gc.get(Calendar.MONTH) == iMonth);
+			}while(gc.get(Calendar.MONTH) == iMonth);
+			
 			System.out.println("");
 			System.out.println("*******************************");
 			gc.add(Calendar.MONTH, iMonthRty);

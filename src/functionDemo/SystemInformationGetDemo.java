@@ -13,7 +13,7 @@ import java.util.Enumeration;
 import java.net.*;
 
 public class SystemInformationGetDemo {
-    public static final int PCNAMELENGH = 12;  
+    private static final int PCNAMELENGH = 12;  
     public static void InetAddressScoket(String[] args)
     {
         try

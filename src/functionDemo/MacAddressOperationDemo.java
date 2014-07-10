@@ -3,7 +3,7 @@ package functionDemo;
 
 public class MacAddressOperationDemo {
 	private static int MAC_LENGTH = 12;
-	String resultMac = null;
+	private String resultMac = null;
 	private final String MAC_ADDRESS_CHARACTER = "1234567890abcdefABCDEF:";
 	
 	/*
