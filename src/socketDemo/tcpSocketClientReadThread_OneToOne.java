@@ -14,7 +14,6 @@ public class tcpSocketClientReadThread_OneToOne implements Runnable{
 			br = new BufferedReader(new InputStreamReader(s.getInputStream()));
 		} 
 		catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -30,7 +29,6 @@ public class tcpSocketClientReadThread_OneToOne implements Runnable{
 			}
 		} 
 		catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -40,7 +38,6 @@ public class tcpSocketClientReadThread_OneToOne implements Runnable{
 	}
 	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 
 	}
 }
