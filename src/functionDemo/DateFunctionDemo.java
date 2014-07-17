@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-public class DetaFunctionDemo {
+public class DateFunctionDemo {
 	
 	@SuppressWarnings("deprecation")
 	/*
@@ -128,7 +128,7 @@ public class DetaFunctionDemo {
 	}
 
 	public static void main(String[] args) {
-		DetaFunctionDemo dateFD = new DetaFunctionDemo();
+		DateFunctionDemo dateFD = new DateFunctionDemo();
 		dateFD.CalendarDemo(2013);
 	
 	}

@@ -9,12 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JToolBar;
 import javax.swing.JWindow;
 import java.awt.Font;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 import java.awt.Color;
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
-import javax.swing.JScrollPane;
 import org.eclipse.wb.swing.FocusTraversalOnArray;
 import java.awt.Component;
 

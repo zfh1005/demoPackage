@@ -9,7 +9,7 @@ public class Graphics2DClassFunctionDemo extends Applet {
 
 	/**
 	 * serialVersionUID format:
-	 * year(4)+month(2)+data(2)+orderCode(4)L
+	 * year(4)+month(2)+data(2)+orderCode(4)L 
 	 */
 	private static final long serialVersionUID = 201407070001L;
 	
