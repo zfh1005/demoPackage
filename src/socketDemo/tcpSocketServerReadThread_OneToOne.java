@@ -22,7 +22,6 @@ public class tcpSocketServerReadThread_OneToOne implements Runnable{
 				s.close();
 			} 
 			catch (IOException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		}
@@ -64,7 +63,6 @@ public class tcpSocketServerReadThread_OneToOne implements Runnable{
 	}
 	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 
 	}
 
