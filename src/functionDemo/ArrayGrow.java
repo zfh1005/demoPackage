@@ -15,7 +15,7 @@ public class ArrayGrow {
 	public static void main(String[] args) {
 		int[] a = {1, 2, 3};
 		arrayPrint(a);
-		a = (int[]) goodArrayGrow(a);
+		a = (int[]) ArrayGrow(a);
 		arrayPrint(a);
 
 	}
@@ -28,7 +28,7 @@ public class ArrayGrow {
 	 * 
 	 * */
 	
-	static Object goodArrayGrow(Object a){
+	static Object ArrayGrow(Object a){
 		Class cl = a.getClass();
 		if(! cl.isArray()){
 			return null;

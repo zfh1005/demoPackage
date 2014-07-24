@@ -8,9 +8,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JToolBar;
 import javax.swing.JWindow;
+
 import java.awt.Font;
 import java.awt.Color;
-import org.eclipse.wb.swing.FocusTraversalOnArray;
+
+import functionDemo.FocusTraversalOnArray;
+
 import java.awt.Component;
 
 public class ScreenCaptureToolsUI extends JWindow{
