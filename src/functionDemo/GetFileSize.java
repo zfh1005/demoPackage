@@ -122,8 +122,7 @@ public class GetFileSize {
 	/*print result*/
 	private void printResult(){
 		String pathName = JPathChoose();
-		ArrayList<String> fileList = refreshFileListRecursive(pathName);
-		
+		ArrayList<String> fileList = refreshFileListRecursive(pathName);		
 	}
 
 	/**
@@ -133,7 +132,4 @@ public class GetFileSize {
 		GetFileSize gfs = new GetFileSize();
 		gfs.printResult();
 	}
-
-
-
 }

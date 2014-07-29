@@ -1,9 +1,20 @@
 /**
  * 
+ * version information
+ * v1.0	20140722
+ * 1.first release
+ * 
+ * v2.0	20140725
+ * 1.add addWindowListener function demo
+ * 
+ * 
+ * 
  */
 package SwingDemo;
 
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
@@ -23,7 +34,13 @@ public class CenteredFrame {
 		CeneredFrame frame = new CeneredFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
-
+		frame.addWindowListener(new WindowAdapter(){
+			@Override
+			public void windowClosing(WindowEvent event){
+				JOptionPane.showConfirmDialog(null, "EXIT?", "Exit Confirm", 0);
+				System.exit(0);
+			}
+		});
 	}
 }
 
