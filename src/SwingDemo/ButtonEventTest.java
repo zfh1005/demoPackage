@@ -6,9 +6,12 @@ package SwingDemo;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+import ExceptionDemo.ConsoleWindow;
 
 /**
  * @author zfh1005
@@ -19,6 +22,9 @@ public class ButtonEventTest {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		
+		ConsoleWindow.init();
+		
 		ButtonFrame bf = new ButtonFrame();
 		bf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		bf.setVisible(true);

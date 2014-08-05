@@ -191,7 +191,8 @@ public class javaRegexTest {
 	}
 	
 
-	public static void main(String[] args){  		
+	public static void main(String[] args){  
+		
 		javaRegexTest jrt = new javaRegexTest();
 		try {			
 			jrt.regexLoopTest();
