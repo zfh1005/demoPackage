@@ -1,7 +1,7 @@
 /**
  * test stream input and output
  */
-package StreamDemo;
+package StreamDemo.Base;
 
 import java.io.FileReader;
 import java.io.IOException;

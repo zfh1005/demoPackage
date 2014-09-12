@@ -1,7 +1,7 @@
 /**
  * 
  */
-package StreamDemo;
+package StreamDemo.Base;
 
 /**
  * @author zfh1005

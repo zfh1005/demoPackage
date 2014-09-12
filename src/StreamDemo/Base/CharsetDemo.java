@@ -1,7 +1,7 @@
 /**
  * 
  */
-package StreamDemo;
+package StreamDemo.Base;
 
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;

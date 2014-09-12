@@ -1,8 +1,11 @@
 /**
  * a simple employee class
  */
-package StreamDemo;
+package StreamDemo.Base;
 
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Calendar;
 import java.util.Date;
@@ -57,6 +60,23 @@ public class Employee {
 	}
 	
 	/*
+	 * write employee data to data output
+	 * @param out the data output
+	 * */
+	public void writeData(DataOutput out)throws IOException{		
+		DataIO.writeFixedString(name, NAME_SIZE, out);
+		out.writeDouble(salary);
+		
+		GregorianCalendar calendar = new GregorianCalendar();
+		calendar.setTime(hireDay);
+		
+		out.writeInt(calendar.get(Calendar.YEAR));
+		out.writeInt(calendar.get(Calendar.MONTH) + 1);
+		out.writeInt(calendar.get(Calendar.DAY_OF_MONTH));
+		
+	}
+	
+	/*
 	 * read employee data from a buffered reader
 	 * @param in the scanner
 	 * */
@@ -71,6 +91,21 @@ public class Employee {
 		GregorianCalendar calendar = new GregorianCalendar(y, m - 1, d);
 		hireDay = calendar.getTime();
 				
+	}
+	
+	/*
+	 * read employee data from a buffered reader
+	 * @param in the scanner
+	 * */
+	public void readData(DataInput in) throws IOException{
+		name = DataIO.readFixedString(NAME_SIZE, in);
+		salary = in.readDouble();
+		int y = in.readInt();
+		int m = in.readInt();
+		int d = in.readInt();
+		
+		GregorianCalendar calendar = new GregorianCalendar(y, m - 1, d);
+		hireDay = calendar.getTime();				
 	}
 	
 	/**
@@ -94,6 +129,9 @@ public class Employee {
 		return hireDay;
 	}
 
+	
+	public static final int NAME_SIZE = 40;
+	public static final int RECORD_SZIE = 2 * NAME_SIZE + 8 + 4 + 4 + 4;
 	
 	public String name;
 	public double salary;
