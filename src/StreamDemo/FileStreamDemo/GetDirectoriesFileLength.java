@@ -19,6 +19,7 @@ public class GetDirectoriesFileLength {
 	/**
 	 * @param args
 	 */
+	@SuppressWarnings("static-access")
 	public static void main(String[] args) {
 		//if no arguments provided, start at the parent directory
 		if(args.length == 0){
