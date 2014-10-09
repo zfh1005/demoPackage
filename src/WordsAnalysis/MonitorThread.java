@@ -11,7 +11,7 @@ package WordsAnalysis;
 
 public class MonitorThread extends Thread{
 
-    // 共享数据
+    // free data
     private AllCountModel acm;
     
     public MonitorThread(AllCountModel acm){
@@ -21,14 +21,14 @@ public class MonitorThread extends Thread{
     public void run() {
         while(true){
             try {
-                // 隔段时间检查一次
+                // per check time
                 sleep(500); 
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            // 线程全部工作完毕
+            // thread all finished
             if(0 >= acm.getThreadCount()){
-                // 打印出结果
+                // print result
                 WordsAnalysis.show(acm);
                 return;
             }
