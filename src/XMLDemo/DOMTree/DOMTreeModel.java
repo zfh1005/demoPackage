@@ -32,13 +32,7 @@ public class DOMTreeModel implements TreeModel{
 	public DOMTreeModel(Document document){
 		this.document = document;
 	}
-	/*
-	 * @see javax.swing.tree.TreeModel#addTreeModelListener(javax.swing.event.TreeModelListener)
-	 */
-	@Override
-	public void addTreeModelListener(TreeModelListener l) {
-		
-	}
+	
 	
 	/* get parent's child node
 	 * @param parent the parent node
@@ -104,6 +98,14 @@ public class DOMTreeModel implements TreeModel{
 	 */
 	@Override
 	public void removeTreeModelListener(TreeModelListener l) {
+		
+	}
+	
+	/*
+	 * @see javax.swing.tree.TreeModel#addTreeModelListener(javax.swing.event.TreeModelListener)
+	 */
+	@Override
+	public void addTreeModelListener(TreeModelListener l) {
 		
 	}
 	

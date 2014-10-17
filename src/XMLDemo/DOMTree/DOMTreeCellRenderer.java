@@ -61,7 +61,7 @@ public class DOMTreeCellRenderer extends DefaultTreeCellRenderer {
 
 			@Override
 			public Object getValueAt(int arg0, int arg1) {
-				return arg1 == 0 ? map.item(arg0).getNodeName() : map.item(arg1).getNodeName();
+				return arg1 == 0 ? map.item(arg0).getNodeName() : map.item(arg0).getNodeName();
 			}
 			
 			@Override
@@ -71,7 +71,7 @@ public class DOMTreeCellRenderer extends DefaultTreeCellRenderer {
 			
 			@Override
 			public int getColumnCount() {
-				return 0;
+				return 2;
 			}
 		}));
 		return panel;
