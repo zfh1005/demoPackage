@@ -5,14 +5,27 @@ package XMLDemo.GridBagTest;
 
 import java.awt.Component;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.io.File;
 
 import javax.swing.JPanel;
-import javax.swing.text.Element;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
 
 /**
  * @author zfh1005
  *
  */
+/*
+ * this panel uses an XML file to describe its components and their grid bag layout position.
+ * 
+ * */
 public class GridBagPane extends JPanel {
 	
 	private static final long serialVersionUID = -5948330877497179178L;
@@ -22,7 +35,34 @@ public class GridBagPane extends JPanel {
 	 * @param filename the name of the XML file that describe the pane's components and their positions
 	 */
 	public GridBagPane(String filename) {
+		setLayout(new GridBagLayout());
+		constraints = new GridBagConstraints();
 		
+		try{
+			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+			factory.setValidating(true);
+			
+			if(filename.contains("-schema")){
+				factory.setNamespaceAware(true);
+				final String JAXP_SCHEMA_LANGUAGE = "http://java.sun.com/xml/jaxp/properties/schemalanguage";
+				final String W3C_XML_SCHEMA = "http://www.w3.org/2001/XMLSchema";
+				factory.setAttribute(JAXP_SCHEMA_LANGUAGE, W3C_XML_SCHEMA);
+			}
+			factory.setIgnoringElementContentWhitespace(true);
+			
+			DocumentBuilder builder = factory.newDocumentBuilder();
+			Document document = builder.parse(new File(filename));
+			
+			if(filename.contains("-schema")){
+				int count = removeElementContentWhitrspace(document.getDocumentElement());
+				System.out.println(count + "whitespace nodes removed.");				
+			}
+			
+			parseGridbag(document.getDocumentElement());
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 	
 	/*
@@ -31,7 +71,31 @@ public class GridBagPane extends JPanel {
 	 * @return the number of whitespace nodes that were removed
 	 * */
 	private int removeElementContentWhitrspace(Element e){
-		return 0;
+		NodeList childrenList = e.getChildNodes();
+		int count = 0;
+		boolean allTextChildrenAreWhiteSpace = true;
+		int elements = 0;
+		for(int i = 0; i < childrenList.getLength() && allTextChildrenAreWhiteSpace; i++){
+			Node childNode  = childrenList.item(i);
+			if(childNode instanceof org.w3c.dom.Text && ((org.w3c.dom.Text)childNode).getData().trim().length() > 0){
+				allTextChildrenAreWhiteSpace = false;
+			}
+			else if(childNode instanceof org.w3c.dom.Element){
+				elements ++;
+				count += removeElementContentWhitrspace((Element) childNode);
+			}
+		}	
+		//heuristics for element content
+		if(elements > 0 && allTextChildrenAreWhiteSpace){
+			for(int i = childrenList.getLength() - 1; i >= 0; i--){
+				Node child = childrenList.item(i);
+				if(child instanceof Text){
+					e.removeChild(child);
+					count++;
+				}
+			}
+		}
+		return count;
 		
 	}
 	
