@@ -7,6 +7,7 @@ import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.io.File;
+import java.lang.reflect.Field;
 
 import javax.swing.JPanel;
 import javax.xml.parsers.DocumentBuilder;
@@ -95,8 +96,7 @@ public class GridBagPane extends JPanel {
 				}
 			}
 		}
-		return count;
-		
+		return count;		
 	}
 	
 	/*
@@ -106,6 +106,12 @@ public class GridBagPane extends JPanel {
 	 * or null if no component in this grid bag pane has the given name
 	 * */
 	public Component get(String name){
+		Component[] components = getComponents();
+		for(int i = 0; i < components.length; i++ ){
+			if(components[i].getName().equals(name)){
+				return components[i];
+			}
+		}		
 		return null;
 	}
 	
@@ -114,7 +120,15 @@ public class GridBagPane extends JPanel {
 	 * @param e a gridbag element
 	 * */
 	private void parseGridbag(Element e){
-		
+		NodeList rows = e.getChildNodes();
+		for(int i = 0; i < rows.getLength(); i++){
+			Element rowElement = (Element)rows.item(i);
+			NodeList cells = rowElement.getChildNodes();
+			for(int j = 0; j < cells.getLength(); j++){
+				Element cell = (Element)cells.item(j);
+				parseCell(cell, i, j);
+			}
+		}		
 	}
 	
 	/*
@@ -124,7 +138,55 @@ public class GridBagPane extends JPanel {
 	 * @param c the column of the cell
 	 * */
 	private void parseCell(Element e, int r, int c){
+		//get attributes
 		
+		String valueString = e.getAttribute("gridx");
+		//use default
+		if(valueString.length() == 0){
+			if(c == 0){
+				constraints.gridx = 0;
+			}
+			else {
+				constraints.gridx += constraints.gridwidth;
+			}
+		}
+		else{
+			constraints.gridx = Integer.parseInt(valueString);
+		}
+		
+		valueString = e.getAttribute("gridy");
+		//use default
+		if(valueString.length() == 0){
+			constraints.gridy = r;
+		}
+		else{
+			constraints.gridy = Integer.parseInt(valueString);
+		}
+		
+		constraints.gridwidth = Integer.parseInt(e.getAttribute("gridwidth"));
+		constraints.gridheight = Integer.parseInt(e.getAttribute("gridheight"));
+		constraints.weightx = Integer.parseInt(e.getAttribute("weightx"));
+		constraints.weighty = Integer.parseInt(e.getAttribute("weighty"));
+		constraints.ipadx = Integer.parseInt(e.getAttribute("ipadx"));
+		constraints.ipady = Integer.parseInt(e.getAttribute("ipady"));
+		
+		//use reflection to get integer value of static fields
+		Class<GridBagConstraints> C1 = GridBagConstraints.class;
+		
+		try{
+			String nameString = e.getAttribute("fill");
+			Field field = C1.getField(nameString);
+			constraints.fill = field.getInt(C1);
+			
+			nameString = e.getAttribute(nameString);
+			constraints.anchor = field.getInt(C1);
+		}
+		catch(Exception exception){
+			exception.printStackTrace();
+		}
+		
+		Component component = (Component)parseBean((Element) e.getFirstChild());
+		add(component, constraints);		
 	}
 	
 	/*
