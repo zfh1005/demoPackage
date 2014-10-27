@@ -6,6 +6,9 @@ package XMLDemo.GridBagTest;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.beans.BeanInfo;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
 import java.io.File;
 import java.lang.reflect.Field;
 
@@ -194,7 +197,43 @@ public class GridBagPane extends JPanel {
 	 * @param e a bean element 
 	 * */
 	private Object parseBean(Element e){
-		return null;
+		try {
+			NodeList childrenList = e.getChildNodes();
+			Element classElement = (Element) childrenList.item(0);
+			String classNameString = ((Text) classElement.getFirstChild()).getData();
+			
+			Class<?> C1 = Class.forName(classNameString);
+			
+			Object object = C1.newInstance();
+			
+			if(object instanceof Component){
+				((Component)object ).setName(e.getAttribute("id"));
+			}
+			
+			for (int i = 0; i < childrenList.getLength(); i++) {
+				Node prooertyElement = childrenList.item(i);
+				Element nameElement = (Element) prooertyElement.getFirstChild();
+				String propertyName = ((Text)nameElement.getFirstChild()).getData();
+				
+				Element valuElement = (Element) prooertyElement.getLastChild();
+				Object valueObject = parseValue(valuElement);
+				
+				BeanInfo beanInfo = Introspector.getBeanInfo(C1);
+				PropertyDescriptor[] descriptors = beanInfo.getPropertyDescriptors();
+				boolean done = false;
+				for (int j = 0; done && (j < descriptors.length); j++) {
+					if(descriptors[j].getName().equals(propertyName)){
+						descriptors[j].getWriteMethod().invoke(object, valueObject);
+						done = true;
+					}
+				}
+			}
+			return object;			
+		}
+		catch(Exception exception){
+			exception.printStackTrace();
+			return null;
+		}		
 	}
 	
 	/*
@@ -202,7 +241,23 @@ public class GridBagPane extends JPanel {
 	 * @param e a value element 
 	 * */
 	private Object parseValue(Element e){
-		return null;
+		Element childElement = (Element) e.getFirstChild();
+		if(childElement.getTagName().equals("bean")){
+			return parseBean(childElement);
+		}
+		String text = ((Text)childElement.getFirstChild()).getData();
+		if(childElement.getTagName().equals("int")){
+			return new Integer(text);
+		}
+		else if(childElement.getTagName().equals("boolean")){
+			return new Boolean(text);
+		}
+		else if(childElement.getTagName().equals("string")){
+			return text;
+		}
+		else{
+			return null;
+		}
 	}
 	
 	private GridBagConstraints constraints;
