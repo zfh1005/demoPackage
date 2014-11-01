@@ -11,6 +11,12 @@ import javax.swing.JFrame;
  * @author zfh1005
  *
  */
+
+/*
+ * This program evaluates XPath expressions
+ * @version 1.01 2014-11-01
+ * 
+ * */
 public class XPathTest {
 
 	/**
@@ -22,7 +28,8 @@ public class XPathTest {
 			@Override
 			public void run() {
 				JFrame frame = new XPathFrame();
-				
+				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				frame.setVisible(true);
 			}
 		});
 
