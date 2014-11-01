@@ -6,9 +6,13 @@ package XMLDemo.XPathTest;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -19,6 +23,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
+import javax.swing.filechooser.FileFilter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -26,6 +31,7 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 /**
  * @author zfh1005
@@ -117,9 +123,43 @@ public class XPathFrame extends JFrame{
 	/*
 	 * Open a file and Load the document
 	 * */
+	@SuppressWarnings("resource")
 	public void openFile() {
+		JFileChooser chooser = new JFileChooser();
+		chooser.setCurrentDirectory(new File("."));//current directory is root folder
 		
+		chooser.setFileFilter(new FileFilter() {			
+			@Override
+			public String getDescription() {
+				return "XML Files.";
+			}		
+			
+			@Override
+			public boolean accept(File f) {
+				return f.isDirectory() || f.getName().toLowerCase().endsWith(".xml");
+			}
+		});
+		int r = chooser.showOpenDialog(this);
+		if(r != JFileChooser.APPROVE_OPTION){
+			return;
+		}
+		File file = chooser.getSelectedFile();
+		
+		try{
+			byte[] bytes = new byte[(int)file.length()];
+			new FileInputStream(file).read(bytes);
+			docTextArea.setText(new String(bytes));
+			document = builder.parse(file);
+		}
+		catch(IOException e){
+			JOptionPane.showMessageDialog(this, e);
+		}
+		catch (SAXException e) {
+			JOptionPane.showMessageDialog(this, e);
+		}
 	}
+	
+	
 	
 	public void evaluate() {
 		
