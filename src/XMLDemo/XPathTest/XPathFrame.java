@@ -24,13 +24,17 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileFilter;
+import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
@@ -162,7 +166,33 @@ public class XPathFrame extends JFrame{
 	
 	
 	public void evaluate() {
-		
+		try{
+			String typeName = (String) typeComboBox.getSelectedItem();
+			QName returnTypeName = (QName)XPathConstants.class.getField(typeName).get(null);
+			Object evalResult = path.evaluate(expressionField.getText(), docTextArea, returnTypeName);
+			if(typeName.equals("NODESET")){
+				NodeList list = (NodeList)evalResult;
+				StringBuilder builder = new StringBuilder();
+				builder.append("{");
+				for(int i = 0; i < list.getLength(); i++){
+					if(i > 0){
+						builder.append(",");
+					}
+					builder.append("" + list.item(i));
+				}
+				builder.append("}");
+				resulTextField.setText("" + builder);
+			}
+			else{
+				resulTextField.setText("" + evalResult);
+			}
+		}
+		catch(XPathExpressionException exception){
+			resulTextField.setText("" + exception);
+		}
+		catch(Exception e){ //refelection exception
+			e.printStackTrace();
+		}
 	}
 	
 	private DocumentBuilder builder;
