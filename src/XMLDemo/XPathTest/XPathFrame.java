@@ -169,7 +169,7 @@ public class XPathFrame extends JFrame{
 		try{
 			String typeName = (String) typeComboBox.getSelectedItem();
 			QName returnTypeName = (QName)XPathConstants.class.getField(typeName).get(null);
-			Object evalResult = path.evaluate(expressionField.getText(), docTextArea, returnTypeName);
+			Object evalResult = path.evaluate(expressionField.getText(), document, returnTypeName);
 			if(typeName.equals("NODESET")){
 				NodeList list = (NodeList)evalResult;
 				StringBuilder builder = new StringBuilder();
