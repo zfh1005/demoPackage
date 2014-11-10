@@ -15,6 +15,12 @@ import javax.xml.stream.XMLStreamReader;
  * @author zfh1005
  *
  */
+
+/*
+ * This program demonstrates how to use a StAX parser.
+ * This program prints all hyperlinks links of an XHTML web page.
+ */
+
 public class StAXTest {
 
 	/**
