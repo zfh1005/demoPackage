@@ -1,7 +1,7 @@
 /**
  * 
  */
-package XMLDemo.SAXTest;
+package XMLDemo.SAX_StAXTest;
 
 import java.io.InputStream;
 import java.net.URL;

@@ -11,4 +11,4 @@
  * This program prints all hyperlinks links of an XHTML web page.
  */
 
-package XMLDemo.SAXTest;
+package XMLDemo.SAX_StAXTest;
