@@ -24,9 +24,8 @@ public class XMLWriteTest {
 				XMLWriteFrame frame = new XMLWriteFrame();
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				frame.setVisible(true);
-			}
+			}			
 		});
-
 	}
 
 }
