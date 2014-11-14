@@ -6,6 +6,9 @@ package XMLDemo.XMLWriteTest;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import javax.swing.JFileChooser;
@@ -15,10 +18,15 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.text.Document;
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 /**
  * @author zfh1005
@@ -28,6 +36,7 @@ import javax.xml.transform.TransformerFactory;
 /*
  * A frame with a component for showing a modern drawing.
  * */
+
 public class XMLWriteFrame extends JFrame {
 
 	/**
@@ -109,6 +118,11 @@ public class XMLWriteFrame extends JFrame {
 		
 	}
 	
+	
+	/*
+	 * Saves the drawing in SVG format, using DOM/XSLT
+	 * 
+	 * */
 	public void  saveDocument() throws TransformerException, IOException {
 		if(chooser.showSaveDialog(this) != JFileChooser.APPROVE_OPTION){
 			return;
@@ -116,8 +130,27 @@ public class XMLWriteFrame extends JFrame {
 		File file = chooser.getSelectedFile();
 		Document document = comp.buildDocument();
 		Transformer transformer = TransformerFactory.newInstance().newTransformer();
-		transformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, "http:");
-				
+		transformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, "http://www.w3.org/TR/2000/CR-SVG-20000802/DTD/svg-2000802.dtd");
+		transformer.setOutputProperty(OutputKeys.DOCTYPE_PUBLIC, "-//W3C//DTD SVG 20000802//EN");
+		transformer.setOutputProperty(OutputKeys.INDENT, "Yes");
+		transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+		transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+		transformer.transform(new DOMSource(document), new StreamResult(new FileOutputStream(file)));
+	}
+	
+	/*
+	 * Svaes the drawing in SVG format, using StAX
+	 * 
+	 * */
+	public void saveStAX() throws FileNotFoundException, XMLStreamException{
+		if(chooser.showSaveDialog(this) != JFileChooser.APPROVE_OPTION){
+			return;
+		}
+		File file = chooser.getSelectedFile();
+		XMLOutputFactory factory = XMLOutputFactory.newInstance();
+		XMLStreamWriter writer = factory.createXMLStreamWriter(new FileOutputStream(file));
+		comp.writeDocument(writer);
+		writer.close();
 	}
 	
 	private static final int DEFAUL_WIDTH = 300;
