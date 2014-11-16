@@ -154,8 +154,8 @@ public class XMLWriteFrame extends JFrame {
 		writer.close();
 	}
 	
-	private static final int DEFAUL_WIDTH = 300;
-	private static final int DEFAULT_HEIGHT = 200;
+	private static final int DEFAUL_WIDTH = 600;
+	private static final int DEFAULT_HEIGHT = 400;
 	
 	private RectangleComponent comp;
 	private JFileChooser chooser;
