@@ -3,7 +3,11 @@
  */
 package XMLDemo.TransformTest;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 import org.xml.sax.ContentHandler;
 import org.xml.sax.DTDHandler;
@@ -14,6 +18,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotRecognizedException;
 import org.xml.sax.SAXNotSupportedException;
 import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.AttributesImpl;
 
 
 
@@ -28,8 +33,7 @@ public class EmployeeReader implements XMLReader {
 	 */
 	@Override
 	public ContentHandler getContentHandler() {
-		// TODO Auto-generated method stub
-		return null;
+		return handler;
 	}
 
 	/* (non-Javadoc)
@@ -37,7 +41,6 @@ public class EmployeeReader implements XMLReader {
 	 */
 	@Override
 	public DTDHandler getDTDHandler() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -46,7 +49,6 @@ public class EmployeeReader implements XMLReader {
 	 */
 	@Override
 	public EntityResolver getEntityResolver() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -55,7 +57,6 @@ public class EmployeeReader implements XMLReader {
 	 */
 	@Override
 	public ErrorHandler getErrorHandler() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -63,9 +64,7 @@ public class EmployeeReader implements XMLReader {
 	 * @see org.xml.sax.XMLReader#getFeature(java.lang.String)
 	 */
 	@Override
-	public boolean getFeature(String arg0) throws SAXNotRecognizedException,
-			SAXNotSupportedException {
-		// TODO Auto-generated method stub
+	public boolean getFeature(String arg0) throws SAXNotRecognizedException, SAXNotSupportedException {
 		return false;
 	}
 
@@ -75,7 +74,6 @@ public class EmployeeReader implements XMLReader {
 	@Override
 	public Object getProperty(String arg0) throws SAXNotRecognizedException,
 			SAXNotSupportedException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -84,8 +82,42 @@ public class EmployeeReader implements XMLReader {
 	 */
 	@Override
 	public void parse(InputSource arg0) throws IOException, SAXException {
-		// TODO Auto-generated method stub
+		InputStream stream = arg0.getByteStream();
+		BufferedReader in = new BufferedReader(new InputStreamReader(stream));
+		String rootElementString = "staff";
+		AttributesImpl atts = new AttributesImpl();
 		
+		if(handler == null){
+			throw new SAXException("No content handle.");
+		}
+		
+		handler.startElement("", rootElementString, rootElementString, atts);
+		String lineString;
+		while((lineString = in.readLine()) != null){
+			handler.startElement("", "employee", "employee", atts);
+			StringTokenizer tokenizer = new StringTokenizer(lineString, "|");
+			
+			handler.startElement("", "name", "name", atts);
+			String string = tokenizer.nextToken();
+			handler.characters(string.toCharArray(), 0, string.length());
+			handler.endElement("", "name", "name");
+			
+			handler.startElement("", "salary", "salary", atts);
+			string = tokenizer.nextToken();
+			handler.characters(string.toCharArray(), 0, string.length());
+			handler.endElement("", "salary", "salary");
+			
+			atts.addAttribute("", "year", "year", "CDATA", tokenizer.nextToken());
+			atts.addAttribute("", "month", "month", "CDATA", tokenizer.nextToken());
+			atts.addAttribute("", "day", "day", "CDATA", tokenizer.nextToken());
+			handler.startElement("", "hireday", "hireday", atts);
+			handler.endElement("", "hireday", "hireday");
+			atts.clear();
+			
+			handler.endElement("", "employee", "employee");
+		}
+		handler.endElement("", rootElementString, rootElementString);
+		handler.endDocument();
 	}
 
 	/* (non-Javadoc)
@@ -93,7 +125,6 @@ public class EmployeeReader implements XMLReader {
 	 */
 	@Override
 	public void parse(String arg0) throws IOException, SAXException {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -102,8 +133,7 @@ public class EmployeeReader implements XMLReader {
 	 */
 	@Override
 	public void setContentHandler(ContentHandler arg0) {
-		// TODO Auto-generated method stub
-		
+		handler = arg0;		
 	}
 
 	/* (non-Javadoc)
@@ -111,7 +141,6 @@ public class EmployeeReader implements XMLReader {
 	 */
 	@Override
 	public void setDTDHandler(DTDHandler arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -120,7 +149,6 @@ public class EmployeeReader implements XMLReader {
 	 */
 	@Override
 	public void setEntityResolver(EntityResolver arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -129,7 +157,6 @@ public class EmployeeReader implements XMLReader {
 	 */
 	@Override
 	public void setErrorHandler(ErrorHandler arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -139,7 +166,6 @@ public class EmployeeReader implements XMLReader {
 	@Override
 	public void setFeature(String arg0, boolean arg1)
 			throws SAXNotRecognizedException, SAXNotSupportedException {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -149,8 +175,9 @@ public class EmployeeReader implements XMLReader {
 	@Override
 	public void setProperty(String arg0, Object arg1)
 			throws SAXNotRecognizedException, SAXNotSupportedException {
-		// TODO Auto-generated method stub
 		
 	}
+	
+	private ContentHandler handler;
 
 }
