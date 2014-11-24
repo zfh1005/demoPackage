@@ -97,19 +97,25 @@ public class EmployeeReader implements XMLReader {
 			handler.startElement("", "employee", "employee", atts);
 			StringTokenizer tokenizer = new StringTokenizer(lineString, "|");
 			
+			//parser name element
 			handler.startElement("", "name", "name", atts);
 			String string = tokenizer.nextToken();
 			handler.characters(string.toCharArray(), 0, string.length());
 			handler.endElement("", "name", "name");
 			
+			//parser salary element
 			handler.startElement("", "salary", "salary", atts);
 			string = tokenizer.nextToken();
 			handler.characters(string.toCharArray(), 0, string.length());
 			handler.endElement("", "salary", "salary");
 			
+			//parser year element
 			atts.addAttribute("", "year", "year", "CDATA", tokenizer.nextToken());
+			//parser month element
 			atts.addAttribute("", "month", "month", "CDATA", tokenizer.nextToken());
+			//parser day element
 			atts.addAttribute("", "day", "day", "CDATA", tokenizer.nextToken());
+			//parser hireday element
 			handler.startElement("", "hireday", "hireday", atts);
 			handler.endElement("", "hireday", "hireday");
 			atts.clear();
