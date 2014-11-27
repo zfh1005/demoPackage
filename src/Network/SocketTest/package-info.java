@@ -6,4 +6,4 @@
  * @author zfh1005
  *
  */
-package Network.SampleGetTimeSocketTest;
+package Network.SocketTest;

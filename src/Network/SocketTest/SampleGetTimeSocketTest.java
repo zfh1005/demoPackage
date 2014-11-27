@@ -1,7 +1,7 @@
 /**
  * 
  */
-package Network.SampleGetTimeSocketTest;
+package Network.SocketTest;
 
 import java.io.IOException;
 import java.io.InputStream;
