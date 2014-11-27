@@ -3,6 +3,8 @@
  */
 package Network.SocketTest;
 
+import java.net.InetAddress;
+
 
 /**
  * This program demonstrates the InterAddress class.
@@ -19,7 +21,20 @@ public class InetAddressTest {
 	 */
 	public static void main(String[] args) {
 
-
+		try {
+			if(args.length > 0){
+				String host = args[0];
+				InetAddress[] address = InetAddress.getAllByName(host);
+				for(InetAddress address2 : address){
+					System.out.println(address2);
+				}
+			}
+			else {
+				InetAddress localHostAddress = InetAddress.getLocalHost();
+				System.out.println(localHostAddress);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-
 }
