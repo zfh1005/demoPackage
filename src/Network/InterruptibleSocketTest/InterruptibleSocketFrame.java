@@ -13,7 +13,7 @@ import java.net.Socket;
 import java.nio.channels.SocketChannel;
 import java.util.Scanner;
 
-import javax.management.loading.PrivateClassLoader;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -107,7 +107,7 @@ public class InterruptibleSocketFrame extends JFrame {
 			}
 		});
 		
-		server = new TestServer();
+		server = new TestServer(messageArea);
 		new Thread(server).start();
 	}
 	
