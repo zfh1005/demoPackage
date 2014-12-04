@@ -46,8 +46,7 @@ public class TestServerHandler implements Runnable{
 		catch(Exception exception){
 			messageArea.append("\nTestServerHandler.run: " + exception);
 		}		
-	}
-	
+	}	
 	
 	private Socket incomingSocket;
 	private int counter;
