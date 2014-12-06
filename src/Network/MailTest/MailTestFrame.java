@@ -7,7 +7,11 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.net.InetAddress;
+import java.net.Socket;
 import java.util.Scanner;
 
 import javax.swing.JButton;
@@ -48,7 +52,7 @@ public class MailTestFrame extends JFrame {
 		toField = new JTextField(20);
 		add(toField, new GBC(1, 1).setFill(GBC.HORIZONTAL).setWeight(100, 0));
 		
-		add(new JLabel("SMTP Server:"), new GBC(0, 2).setFill(GBC.HORIZONTAL));
+		add(new JLabel("SMTP Server: "), new GBC(0, 2).setFill(GBC.HORIZONTAL));
 		smtpServer = new JTextField(20);
 		add(smtpServer, new GBC(1, 2).setFill(GBC.HORIZONTAL).setWeight(100, 0));
 		
@@ -84,9 +88,32 @@ public class MailTestFrame extends JFrame {
 	 * */
 	public void sendMail() {
 		try {
+			Socket socket = new Socket(smtpServer.getText(), 25);
 			
+			InputStream inputStream = socket.getInputStream();
+			OutputStream outputStream = socket.getOutputStream();
 			
-		} catch (Exception e) {
+			inScanner = new Scanner(inputStream);
+			outPrintWriter = new PrintWriter(outputStream, true);
+			
+			String hostName = InetAddress.getLocalHost().getHostName();
+			
+			receive();
+			
+			send("Hello" + hostName);
+			receive();
+			send("Mail From: < " + frommField.getText() + ">");
+			receive();
+			send("Mail To: < " + toField.getText() + ">");	
+			receive();
+			send("DATA");	
+			receive();
+			send(messageArea.getText());
+			send(".");
+			receive();
+			socket.close();
+		}
+		catch (Exception e) {
 			comnArea.append("Error:" + e);
 		}
 	}
