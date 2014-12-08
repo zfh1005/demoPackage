@@ -9,6 +9,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 /**
  * @author zfh1005
@@ -54,8 +55,24 @@ public class URLConnectionTest {
 			}
 			
 			//print convenience function
+			System.out.println("-----------------");
+			System.out.println("getContentType: " + connection.getContentType());
+			System.out.println("getContentLength: " + connection.getContentLength());
+			System.out.println("getContentEncoding: " + connection.getContentEncoding());
+			System.out.println("getDate: " + connection.getDate());
+			System.out.println("getExpiration: " + connection.getExpiration());
+			System.out.println("getLastModified: " + connection.getLastModified());
+			System.out.println("-----------------");
 			
+			Scanner inScanner = new Scanner(connection.getInputStream());
 			
+			//print first ten lines of contents
+			for (int n = 0; inScanner.hasNextLine() && n <= 10; n++) {
+				System.out.println(inScanner.nextLine());
+			}
+			if(inScanner.hasNextLine()){
+				System.out.println("...");
+			}
 		}
 		catch(Exception exception){
 			System.out.println(exception);
