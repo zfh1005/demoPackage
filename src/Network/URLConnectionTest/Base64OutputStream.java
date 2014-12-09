@@ -4,6 +4,7 @@
 package Network.URLConnectionTest;
 
 import java.io.FilterOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 
 /**
@@ -18,11 +19,44 @@ import java.io.OutputStream;
 public class Base64OutputStream extends FilterOutputStream{
 
 	/**
-	 * @param out
+	 * Constructs the stream filter
+	 * @param out the stream to filter
 	 */
 	public Base64OutputStream(OutputStream out) {
-		super(out);
-		// TODO Auto-generated constructor stub
+		super(out);		
+	}
+	
+	@Override
+	public void write(int c) throws IOException{
+		inBuf[i] = c;
+		i++;
+		if(i == 3){
+			super.write(toBase64[(inBuf[0] & 0xFC) >> 2]);
+			super.write(toBase64[((inBuf[0] & 0x03) << 4) | ((inBuf[1] & 0xF0) >> 4)]);
+			super.write(toBase64[((inBuf[1] & 0x0F) << 2) | ((inBuf[2] & 0xC0) >> 6)]);
+			super.write(toBase64[(inBuf[2] & 0x3F)]);
+			col += 4;
+			i = 0;
+			if(col >= 76){
+				super.write('\n');
+				col = 0;
+			}
+		}
+	}
+	
+	@Override
+	public void flush() throws IOException{
+		if(i == 1){
+			super.write(toBase64[(inBuf[0] & 0xFC) >> 2]);
+			super.write(toBase64[(inBuf[0] & 0x03) << 4]);
+			super.write('=');
+			super.write('=');			
+		}
+		else if(i == 2){
+			super.write(toBase64[(inBuf[0] & 0xFC) >> 2]);
+			super.write(toBase64[((inBuf[0] & 0x03) << 4) | ((inBuf[1] & 0xF0) >> 4)]);
+			super.write(toBase64[(inBuf[1] & 0x0F) << 2]);
+		}
 	}
 	
 	private static char[] toBase64 = {
