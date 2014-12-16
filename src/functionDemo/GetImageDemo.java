@@ -51,7 +51,7 @@ public class GetImageDemo extends JFrame{
 					String urlStr = jtfUrl.getText();    //get image URL address
 					URL url = new URL(urlStr);
 					image = toolKit.getImage(url); //get image
-					repaint(); //repaint image
+					repaint(); //repaint frame
 				}
 				catch(MalformedURLException ex){
 					ex.printStackTrace(); //output error information
