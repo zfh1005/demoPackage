@@ -3,9 +3,17 @@
  */
 package SQL.QueryDB;
 
+import java.awt.GridBagLayout;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Driver;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.Properties;
 
+import javax.sql.rowset.JdbcRowSet;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
@@ -24,14 +32,70 @@ public class QueryDBFrame extends JFrame {
 	 */
 	private static final long serialVersionUID = -7996420834616566497L;
 
+	public QueryDBFrame(){
+		//frame setting
+		setTitle("QueryDB");
+		setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+		setLayout(new GridBagLayout());
+		
+		//add control into frame
+		authorsJComboBox = new JComboBox<>();
+		authorsJComboBox.setEditable(false);
+		authorsJComboBox.addItem("Any");
+		
+		publishersJComboBox = new JComboBox<>();
+		publishersJComboBox.setEditable(false);
+		publishersJComboBox.addItem("Any");
+		
+		resulJTextArea = new JTextArea(4, 50);
+		resulJTextArea.setEditable(false);
+		
+		priceChangeJTextField = new JTextField(8);
+		priceChangeJTextField.setText("-5.00");
+		
+		//Database operation
+		try {
+			connection = getConnection();
+		} 
+		catch (SQLException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+	}
+	
+	
+	/*
+	 * Gets a connection from the properties specified in the file database.properies.
+	 * @return the database connection
+	 * */
+	public static Connection getConnection() throws SQLException, IOException{
+		Properties props = new Properties();
+		FileInputStream inputStream = new FileInputStream("database.properties");
+		props.load(inputStream);
+		inputStream.close();
+		
+		String driversString = props.getProperty("jdbc.drivers");
+		if(driversString != null){
+			System.setProperty("jdbc.drivers", driversString);
+		}
+		
+		String urlString = props.getProperty("jdbc.url");
+		String userNameString = props.getProperty("jdbc.username");
+		String passwordString = props.getProperty("jdbc.password");
+		
+		return DriverManager.getConnection(urlString, userNameString, passwordString);
+	}
 	
 	//date define
 	
 	public static final int DEFAULT_WIDTH = 400;
 	public static final int DEFAULT_HEIGHT = 400;
 	
-	private JComboBox authorsJComboBox;
-	private JComboBox publishersJComboBox;
+	private JComboBox<Object> authorsJComboBox;
+	private JComboBox<Object> publishersJComboBox;
 	private JTextField priceChangeJTextField;
 	private JTextArea resulJTextArea;
 	private Connection connection;
