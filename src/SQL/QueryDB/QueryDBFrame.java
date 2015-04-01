@@ -89,8 +89,34 @@ public class QueryDBFrame extends JFrame {
 		return DriverManager.getConnection(urlString, userNameString, passwordString);
 	}
 	
-	//date define
+	/*
+	 * Executes an update statement to change price
+	 * */
+	public void changePrice(){
+		String publisher = (String) publishersJComboBox.getSelectedItem();
+		if(publisher.equals("Any")){
+			resulJTextArea.setText("I am sorry, but I cannot do that");
+			return;
+		}
+		
+		try{
+			if (priceUpdateStatement == null){
+				priceUpdateStatement = connection.prepareStatement(publisher);
+			}
+			priceUpdateStatement.setString(1, priceChangeJTextField.getText());
+			priceUpdateStatement.setString(2, publisher);
+			
+			int r = priceUpdateStatement.executeUpdate();
+			resulJTextArea.setText(r + " record uodated. ");
+		}
+		catch(SQLException e){
+			for(Throwable t : e){
+				resulJTextArea.append(t.getMessage());
+			}
+		}
+	}
 	
+	//date define	
 	public static final int DEFAULT_WIDTH = 400;
 	public static final int DEFAULT_HEIGHT = 400;
 	
