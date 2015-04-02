@@ -4,6 +4,11 @@
 package SQL.QueryDB;
 
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
@@ -16,10 +21,14 @@ import java.sql.Statement;
 import java.util.Properties;
 
 import javax.sql.rowset.JdbcRowSet;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+
+import SwingDemo.GBC;
 
 /**
  * @author zfh1005
@@ -77,13 +86,54 @@ public class QueryDBFrame extends JFrame {
 			statement.close();
 			
 		} 
-		catch (SQLException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		catch(SQLException e){
+			for(Throwable t : e){
+				resulJTextArea.append(t.getMessage());
+			}
 		}
 		
+		add(authorsJComboBox, new GBC(0, 0, 2, 1));
+		add(publishersJComboBox, new GBC(2, 0, 2, 1));
 		
+		JButton queryButton = new JButton("Query");
+		queryButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				executeQuery();				
+			}
+		});		
+		add(queryButton, new GBC(0, 1, 1, 1).setInsets(3));
 		
+		JButton changeButton = new JButton("Change prices");
+		changeButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				changePrice();				
+			}
+		});
+		add(queryButton, new GBC(2, 1, 1, 1).setInsets(3));
+		
+		add(priceChangeJTextField, new GBC(3, 1, 1, 1).setFill(GBC.HORIZONTAL));
+		
+		add(new JScrollPane(resulJTextArea), new GBC(0, 2, 4, 1).setFill(GBC.BOTH).setWeight(100, 100));
+		
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent event) {
+				try {
+					if(connection != null){
+						connection.close();
+					}
+					
+				} catch (SQLException e) {
+					for(Throwable t : e){
+						e.printStackTrace();
+					}
+				}
+			}
+		});		
 	}
 	
 	
