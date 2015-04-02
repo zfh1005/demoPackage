@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
@@ -87,6 +88,62 @@ public class QueryDBFrame extends JFrame {
 		String passwordString = props.getProperty("jdbc.password");
 		
 		return DriverManager.getConnection(urlString, userNameString, passwordString);
+	}
+	
+	/*
+	 * Executes the selected query
+	 * */
+	private void executeQuery() {
+		ResultSet rSet = null;
+		try{
+			String author = (String) authorsJComboBox.getSelectedItem();
+			String publisher = (String) publishersJComboBox.getSelectedItem();
+			
+			//run the database query
+			if(!author.equals("Any") && !publisher.equals("Any")){
+				if(authorPublisherQueryStatement == null){
+					authorPublisherQueryStatement = connection.prepareStatement(authorPublisherQuery);
+				}
+				authorPublisherQueryStatement.setString(1, author);
+				authorPublisherQueryStatement.setString(2, publisher);
+				rSet = authorPublisherQueryStatement.executeQuery();			
+			}
+			else if(!author.equals("Any") && publisher.equals("Any")){
+				if(authorQueryStatement == null){
+					authorQueryStatement = connection.prepareStatement(authorQuery);
+				}
+				authorQueryStatement.setString(1, author);
+				rSet = authorQueryStatement.executeQuery();
+			}
+			else if (author.equals("Any") && !publisher.equals("Any")){
+				if (publisherQueryStatement == null) {
+					publisherQueryStatement = connection.prepareStatement(publisherQuery);
+				}
+				publisherQueryStatement.setString(1, publisher);
+				rSet = publisherQueryStatement.executeQuery();
+			}
+			else {
+				if(allQueryStatement == null){
+					allQueryStatement = connection.prepareStatement(allQuery);
+				}
+				rSet = allQueryStatement.executeQuery();
+			}
+			
+			//display the result
+			resulJTextArea.setText("");
+			while (rSet.next()) {
+				resulJTextArea.append(rSet.getString(1));
+				resulJTextArea.append(", ");
+				resulJTextArea.append(rSet.getString(2));
+				resulJTextArea.append("\n");
+			}
+			rSet.close();
+		}
+		catch(SQLException e){
+			for(Throwable t : e){
+				resulJTextArea.append(t.getMessage());
+			}
+		}
 	}
 	
 	/*
