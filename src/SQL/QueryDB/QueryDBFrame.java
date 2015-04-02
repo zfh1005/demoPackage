@@ -12,6 +12,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Properties;
 
 import javax.sql.rowset.JdbcRowSet;
@@ -57,6 +58,24 @@ public class QueryDBFrame extends JFrame {
 		//Database operation
 		try {
 			connection = getConnection();
+			Statement statement = connection.createStatement();
+			
+			String queryString = "SELECT Name FROM Authors";
+			ResultSet rSet = statement.executeQuery(queryString);
+			while(rSet.next()){
+				authorsJComboBox.addItem(rSet.getString(1));
+			}
+			rSet.close();
+			
+			queryString = "SELECT Name FROM Publishers";			
+			rSet = statement.executeQuery(queryString);
+			while(rSet.next()){
+				publishersJComboBox.addItem(rSet.getString(1));
+			}
+			rSet.close();
+			
+			statement.close();
+			
 		} 
 		catch (SQLException | IOException e) {
 			// TODO Auto-generated catch block
