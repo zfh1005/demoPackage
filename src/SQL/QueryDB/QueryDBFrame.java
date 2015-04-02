@@ -91,6 +91,9 @@ public class QueryDBFrame extends JFrame {
 				resulJTextArea.append(t.getMessage());
 			}
 		}
+		catch (IOException e) {
+			resulJTextArea.append("" + e);
+		}
 		
 		add(authorsJComboBox, new GBC(0, 0, 2, 1));
 		add(publishersJComboBox, new GBC(2, 0, 2, 1));
