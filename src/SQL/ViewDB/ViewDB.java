@@ -1,7 +1,7 @@
 /**
  * 
  */
-package SQL.QueryDB;
+package SQL.ViewDB;
 
 import java.awt.EventQueue;
 

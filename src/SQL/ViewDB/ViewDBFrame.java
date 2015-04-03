@@ -1,7 +1,7 @@
 /**
  * 
  */
-package SQL.QueryDB;
+package SQL.ViewDB;
 
 import javax.swing.JFrame;
 
@@ -15,5 +15,7 @@ public class ViewDBFrame extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = -3077875055654780889L;
+	
+
 
 }
