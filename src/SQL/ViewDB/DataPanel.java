@@ -42,7 +42,26 @@ public class DataPanel extends JPanel{
 		gbc.gridwidth = 1;
 		gbc.gridheight = 1;
 		
-				
+		ResultSetMetaData rsmdData = rSet.getMetaData();
+		for(int i = 1; i <= rsmdData.getColumnCount(); i ++){
+			gbc.gridy = i -1;
+			
+			String columnName = rsmdData.getColumnLabel(i);
+			gbc.gridx = 0;
+			gbc.anchor = GridBagConstraints.EAST;
+			add(new JLabel(columnName), gbc);
+			
+			int columnWidth = rsmdData.getColumnDisplaySize(i);
+			JTextField tb = new JTextField(columnWidth);
+			if(!rsmdData.getColumnClassName(i).equals("java.lang.String")){
+				tb.setEditable(false);
+			}
+			fields.add(tb);
+			
+			gbc.gridx = 1;
+			gbc.anchor = GridBagConstraints.WEST;
+			add(tb, gbc);
+		}		
 		
 	}
 	
