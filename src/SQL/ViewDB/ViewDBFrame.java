@@ -20,6 +20,8 @@ import javax.sql.rowset.CachedRowSet;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 
 import com.sun.rowset.CachedRowSetImpl;  
 
@@ -68,11 +70,28 @@ public class ViewDBFrame extends JFrame {
 		try{
 			//open connection
 			Connection connection = getConnection();
-			Statement statement = connection.createStatement();
-			ResultSet resultSet = statement.executeQuery("SELECT * FROM " + tableNameString);
+			try{
+				Statement statement = connection.createStatement();
+				ResultSet resultSet = statement.executeQuery("SELECT * FROM " + tableNameString);
+				
+				//copy into cached row set
+				crs = new CachedRowSetImpl();
+				crs.setTableName(tableNameString);
+				crs.populate(resultSet);
+			}
+			finally{
+				connection.close();
+			}
 			
-			//copy into cached row set
-			crs = new CachedRowSetImpl();
+			if(scrollPane != null){
+				remove(scrollPane);
+			}
+			
+			dataPanel = new DataPanel(crs);
+			scrollPane = new JScrollPane(dataPanel);
+			add(scrollPane, BorderLayout.CENTER);
+			validate();
+			
 			
 		}
 		catch(SQLException e){
@@ -92,6 +111,21 @@ public class ViewDBFrame extends JFrame {
 		String passwordString = props.getProperty("jdbc.password");
 		
 		return DriverManager.getConnection(urlString, userNameString, passwordString);
+	}
+	
+	public void showNextRow(){
+		try {
+			if(crs == null || crs.isLast()){
+				return;
+			}
+			crs.next();
+			
+			//reference the DataPanel.showRow to display the database's Row.
+				
+			
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(this, e);
+		}
 	}
 	
 	
