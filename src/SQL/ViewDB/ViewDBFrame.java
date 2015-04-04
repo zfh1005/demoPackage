@@ -91,7 +91,7 @@ public class ViewDBFrame extends JFrame {
 			scrollPane = new JScrollPane(dataPanel);
 			add(scrollPane, BorderLayout.CENTER);
 			validate();
-			
+			showNextRow();			
 			
 		}
 		catch(SQLException e){
@@ -113,6 +113,60 @@ public class ViewDBFrame extends JFrame {
 		return DriverManager.getConnection(urlString, userNameString, passwordString);
 	}
 	
+	
+	/*
+	 * Moves to the previous table row 
+	 * */
+	public void showPreviousRow(){
+		try{
+			if(crs == null || crs.isFirst()){
+				return;
+			}
+			
+			crs.previous();
+			dataPanel.showRow(crs);	
+		}
+		catch(SQLException e){
+			for(Throwable throwable : e){
+				throwable.printStackTrace();
+			}
+		}
+	}
+	
+	/*
+	 * Delete current table row.
+	 * */
+	public void deleteRow(){
+		try {
+			Connection connection = getConnection();
+			
+			try {
+				crs.deleteRow();
+				crs.acceptChanges(connection);
+				if(!crs.isLast()){
+					crs.next();
+				}
+				else if(!crs.isFirst()){
+					crs.previous();
+				}
+				else{
+					crs = null;
+				}
+				dataPanel.showRow(crs);
+			} 
+			finally{
+				connection.close();
+			}
+			
+		} 
+		catch (SQLException e) {
+			JOptionPane.showMessageDialog(this, e);
+		}
+	}
+	
+	/*
+	 * Moves to the next table row
+	 * */
 	public void showNextRow(){
 		try {
 			if(crs == null || crs.isLast()){
@@ -124,6 +178,27 @@ public class ViewDBFrame extends JFrame {
 				
 			
 		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(this, e);
+		}
+	}
+	
+	/*
+	 * Saves all changes.
+	 * */
+	public void saveChanges(){
+		try {
+			Connection connection = getConnection();
+			
+			try {
+				dataPanel.setRow(crs);
+				crs.acceptChanges(connection);
+			} 
+			finally{
+				connection.close();
+			}
+			
+		} 
+		catch (SQLException e) {
 			JOptionPane.showMessageDialog(this, e);
 		}
 	}
